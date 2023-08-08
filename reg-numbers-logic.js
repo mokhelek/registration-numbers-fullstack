@@ -56,7 +56,7 @@ export default function regNumbersFactory() {
 
             if (regFormatCheck(regNum)) {
                 if( !(await checkDuplicates(db, regNum)) ){
-                    await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
+                    await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum.toLowerCase()]);
                 }else{
                     req.flash("info", "Registration already exists");
                 }
