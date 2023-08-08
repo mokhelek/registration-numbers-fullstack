@@ -33,7 +33,7 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/add-registration", async (req, res) => {
-    await regNumsInstance.addRegistration(db, req.body.regNumInput, req);
+    await regNumsInstance.addRegistration(db, (req.body.regNumInput).toUpperCase(), req);
     res.redirect("/");
 });
 
