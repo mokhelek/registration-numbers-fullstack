@@ -1,23 +1,12 @@
 export default function regNumbersFactory() {
-    let registrationNumbers =  [];
-    let countingPlaces = { "Cape Town": 0, Paarl: 0, Bellville: 0, Stellenbosch: 0, "Kuils River": 0, Malmesbury: 0 };
-    let registrationFormat =  /^[a-zA-Z]{0,3}\s*\d{3}(?:[-\s]?\d{0,3})$/
-
-    function handleDuplicates(regNum) {
-        if (!registrationNumbers.includes(regNum)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
- 
+    let registrationNumbers = [];
+    let registrationFormat = /^[a-zA-Z]{0,3}\s*\d{3}(?:[-\s]?\d{0,3})$/;
 
     function filterRegNumbers(town) {
         let filteredArray = [];
-        if(town == "ALL"){
-            filteredArray = registrationNumbers ;
-        }else{
+        if (town == "ALL") {
+            filteredArray = registrationNumbers;
+        } else {
             registrationNumbers.filter(function (regNum) {
                 if (regNum.startsWith(town)) {
                     filteredArray.push(regNum);
@@ -27,10 +16,9 @@ export default function regNumbersFactory() {
         return filteredArray;
     }
 
-    function regFormatCheck(input){
-        return registrationFormat.test(input)
+    function regFormatCheck(input) {
+        return registrationFormat.test(input);
     }
-
 
     function countForTown() {
         if (registrationNumbers[registrationNumbers.length - 1].startsWith("CA")) {
@@ -48,35 +36,35 @@ export default function regNumbersFactory() {
         } else {
             return false;
         }
-        return true ; // ? if process successful
+        return true; // ? if process successful
     }
-
-    function getCountingPlaces() {
-        return countingPlaces;
-    }
-  
 
     async function getRegistrations(db) {
         let registrations = await db.any("SELECT * FROM registrations");
-        return registrations;
+        return registrations.reverse();
+    }
+
+    async function checkDuplicates(regNum) {
+        let regNums = await getRegistrations();
+        return regNums.some((obj) => obj.registration == regNum);
     }
 
     async function addRegistration(db, regNum, req) {
-        // if (handleDuplicates(regNum)) {
-        //     registrationNumbers.push(regNum);
-        // }
-
-        await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum])
+        if (regNum) {
+            if (regFormatCheck(regNum)) {
+                await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
+            } else {
+                req.flash("info", "This is an invalid format");
+            }
+        } else {
+            req.flash("info", "Input cannot be empty");
+        }
     }
-
     return {
         addRegistration,
         getRegistrations,
         filterRegNumbers,
         countForTown,
-        handleDuplicates,
-        getCountingPlaces,
         regFormatCheck,
-            
     };
 }
