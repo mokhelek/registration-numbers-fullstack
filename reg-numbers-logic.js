@@ -44,27 +44,42 @@ export default function regNumbersFactory() {
         return registrations.reverse();
     }
 
-    async function checkDuplicates(regNum) {
-        let regNums = await getRegistrations();
+    async function checkDuplicates(db, regNum) {
+        let regNums = await getRegistrations(db);
         return regNums.some((obj) => obj.registration == regNum);
     }
 
     async function addRegistration(db, regNum, req) {
+        // TODO : -> Add unknown location error handling
+
         if (regNum) {
+
             if (regFormatCheck(regNum)) {
-                await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
+                if( !(await checkDuplicates(db, regNum)) ){
+                    await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
+                }else{
+                    req.flash("info", "Registration already exists");
+                }
             } else {
                 req.flash("info", "This is an invalid format");
             }
+
         } else {
             req.flash("info", "Input cannot be empty");
         }
     }
+
+    async function resetData(db) {
+        await db.none("DELETE FROM registrations");
+    }
+
+
     return {
         addRegistration,
         getRegistrations,
         filterRegNumbers,
         countForTown,
         regFormatCheck,
+        resetData,
     };
 }

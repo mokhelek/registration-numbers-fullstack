@@ -37,7 +37,10 @@ app.post("/add-registration", async (req, res) => {
     res.redirect("/");
 });
 
-
+app.get("/reset-data", async (req, res) => {
+    await regNumsInstance.resetData(db);
+    res.redirect("/");
+});
 
 let PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
