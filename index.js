@@ -27,8 +27,8 @@ app.use(bodyParser.json());
 
 let regNumsInstance = regNumbersFactory();
 
-app.get("/", async (req, res) => {
-    let regNums = await regNumsInstance.getRegistrations(db);
+app.get("/:regCode?", async (req, res) => {
+    let regNums = await regNumsInstance.getRegistrations(db, req.params.regCode );
     res.render("home", {regNums});
 });
 

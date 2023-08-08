@@ -20,28 +20,20 @@ export default function regNumbersFactory() {
         return registrationFormat.test(input);
     }
 
-    function countForTown() {
-        if (registrationNumbers[registrationNumbers.length - 1].startsWith("CA")) {
-            countingPlaces["Cape Town"]++;
-        } else if (registrationNumbers[registrationNumbers.length - 1].startsWith("CJ")) {
-            countingPlaces["Paarl"]++;
-        } else if (registrationNumbers[registrationNumbers.length - 1].startsWith("CY")) {
-            countingPlaces["Bellville"]++;
-        } else if (registrationNumbers[registrationNumbers.length - 1].startsWith("CL")) {
-            countingPlaces["Stellenbosch"]++;
-        } else if (registrationNumbers[registrationNumbers.length - 1].startsWith("CF")) {
-            countingPlaces["Kuils River"]++;
-        } else if (registrationNumbers[registrationNumbers.length - 1].startsWith("CK")) {
-            countingPlaces["Malmesbury"]++;
-        } else {
-            return false;
-        }
-        return true; // ? if process successful
-    }
 
-    async function getRegistrations(db) {
+    async function getRegistrations(db, regCode) {
         let registrations = await db.any("SELECT * FROM registrations");
-        return registrations.reverse();
+        /*
+            ? After fetching all the data
+            ? Filter it according to a code passed
+            ? And thereafter return the reverse of the new filtered array
+        */
+        let filteredRegArr = registrations.filter(function(item){
+            return (item.registration).includes(regCode)
+        })
+        console.log("Filtered ", filteredRegArr)
+
+        return filteredRegArr.reverse();
     }
 
     async function checkDuplicates(db, regNum) {
@@ -78,7 +70,6 @@ export default function regNumbersFactory() {
         addRegistration,
         getRegistrations,
         filterRegNumbers,
-        countForTown,
         regFormatCheck,
         resetData,
     };
