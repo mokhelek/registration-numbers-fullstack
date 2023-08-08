@@ -22,17 +22,17 @@ export default function regNumbersFactory() {
 
 
     async function getRegistrations(db, regCode) {
+        let filteredRegArr = []
         let registrations = await db.any("SELECT * FROM registrations");
-        /*
-            ? After fetching all the data
-            ? Filter it according to a code passed
-            ? And thereafter return the reverse of the new filtered array
-        */
-        let filteredRegArr = registrations.filter(function(item){
-            return (item.registration).includes(regCode)
-        })
-        console.log("Filtered ", filteredRegArr)
-
+  
+        if(regCode==undefined || regCode=="ALL"){
+            filteredRegArr = registrations ;
+        }else{
+            filteredRegArr = registrations.filter(function(item){
+                return (item.registration).includes(regCode)
+            })
+        }
+  
         return filteredRegArr.reverse();
     }
 
