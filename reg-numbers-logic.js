@@ -36,7 +36,7 @@ export default function regNumbersFactory() {
 
     async function getTowns(db) {
         let townsData = await db.any("SELECT * FROM towns");
-        return townsData ;
+        return townsData.reverse() ;
     }
 
     async function checkDuplicates(db, regNum) {

@@ -93,47 +93,15 @@
                 <h5 style="color: rgb(58, 58, 58); font-weight: 600">Towns Statistics</h5>
 
                 <div class="row">
-                    <div class="col-sm-4">
-                        <div align="center" id="cpt-card" class="card card-body">
-                            <h2 id="cape_town_counter" class="town-count"><strong>0</strong></h2>
-                            <p id="town">Cape Town</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div align="center" id="stellies-card" class="card card-body">
-                            <h2 id="stellenbosch_counter" class="town-count"><strong>0</strong></h2>
-                            <p id="town">Stellenbosch</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div align="center" id="bellville-card" class="card card-body">
-                            <h2 id="bellville_counter" class="town-count"><strong>0</strong></h2>
-                            <p id="town">Bellville</p>
-                        </div>
-                    </div>
-                </div>
-                <br />
-
-                <div class="row">
-                    <div class="col-sm-4">
+                    {{#each townData}}
+                    <div style="margin-bottom: 0.5rem;" class="col-sm-4">
                         <div align="center" id="kr-card" class="card card-body">
-                            <h2 id="kuils_river_counter" class="town-count"><strong>0</strong></h2>
-                            <p id="town">Kuils River</p>
+                            <h2 id="kuils_river_counter" class="town-count"><strong>{{this.counter}}</strong></h2>
+                            <p id="town">{{this.town}}</p>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div align="center" id="paarl-card" class="card card-body">
-                            <h2 id="paarl_counter" class="town-count"><strong>0</strong></h2>
-                            <p id="town">Paarl</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div align="center" id="malmesbury-card" class="card card-body">
-                            <h2 id="malmesbury_counter" class="town-count"><strong>0</strong></h2>
-                            <p id="town">Malmesbury</p>
-                        </div>
-                    </div>
-                </div>
+                    {{/each}}
+                </div>  
                 <br />
             </div>
         </div>
