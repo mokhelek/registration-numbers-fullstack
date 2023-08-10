@@ -29,7 +29,11 @@ let regNumsInstance = regNumbersFactory();
 
 app.get("/:regCode?", async (req, res) => {
     let regNums = await regNumsInstance.getRegistrations(db, req.params.regCode );
-    res.render("home", {regNums});
+    let townData = await regNumsInstance.getTowns(db, req.params.regCode)
+    res.render("home", {
+        regNums,
+        townData
+    });
 });
 
 app.post("/registrations/add-registration", async (req, res) => {

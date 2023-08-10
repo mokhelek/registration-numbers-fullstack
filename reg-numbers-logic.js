@@ -34,6 +34,11 @@ export default function regNumbersFactory() {
         return filteredRegArr.reverse();
     }
 
+    async function getTowns(db) {
+        let townsData = await db.any("SELECT * FROM towns");
+        return townsData ;
+    }
+
     async function checkDuplicates(db, regNum) {
         let regNums = await getRegistrations(db);
         return regNums.some((obj) => obj.registration == regNum);
@@ -74,5 +79,6 @@ export default function regNumbersFactory() {
         filterRegNumbers,
         regFormatCheck,
         resetData,
+        getTowns,
     };
 }
