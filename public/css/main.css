@@ -94,7 +94,6 @@ select{
 }
 .selected-card{
     background-color: rgba(118, 118, 255, 0.2);
-    border: 1px rgb(68, 68, 255) solid;
 }
 .errors{
     background-color: rgba(255, 0, 0, 0.124);
@@ -108,3 +107,4 @@ select{
     color:rgb(255, 103, 32) !important;
     border: 1px rgb(241, 152, 9) solid !important;
 }
+

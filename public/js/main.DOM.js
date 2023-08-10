@@ -8,11 +8,12 @@ setTimeout(() => {
 
 
 
-function applyFilter(code) {
-   window.location.href = `/${code}`; 
-}
+let currentURL = window.location.href;
 
-const dropDown = document.querySelector("#dropDown");
-dropDown.addEventListener("change",function(e){
-  applyFilter(e.target.value)
-})
+// Split the URL by slashes and get the last part
+var parts = currentURL.split('/');
+var lastPart = parts[parts.length - 1];
+
+let selectedTown = document.querySelector(`#${lastPart}`)
+
+selectedTown.classList.add("selected-card")
