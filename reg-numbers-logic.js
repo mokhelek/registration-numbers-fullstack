@@ -46,6 +46,9 @@ export default function regNumbersFactory() {
                 if (regFormatCheck(regNum)) {
                     if (!(await checkDuplicates(db, regNum))) {
                         await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
+                        console.log( regNum.substring(0, 2) )
+                        await db.none('UPDATE towns SET counter = towns.counter + 1 WHERE code = $1',[regNum.substring(0, 2)])
+
                     } else {
                         req.flash("info", "Registration already exists");
                     }
