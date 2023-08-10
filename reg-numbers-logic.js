@@ -20,19 +20,17 @@ export default function regNumbersFactory() {
         return registrationFormat.test(input);
     }
 
-
     async function getRegistrations(db, regCode) {
-        let filteredRegArr = []
+        let filteredRegArr = [];
         let registrations = await db.any("SELECT * FROM registrations");
-  
-        if(regCode==undefined || regCode=="ALL"){
-            filteredRegArr = registrations ;
-        }else{
-            filteredRegArr = registrations.filter(function(item){
-                return (item.registration).includes(regCode)
-            })
+
+        if (regCode == undefined || regCode == "ALL") {
+            filteredRegArr = registrations;
+        } else {
+            filteredRegArr = registrations.filter(function (item) {
+                return item.registration.includes(regCode);
+            });
         }
-  
         return filteredRegArr.reverse();
     }
 
@@ -42,18 +40,20 @@ export default function regNumbersFactory() {
     }
 
     async function addRegistration(db, regNum, req) {
-        // TODO : -> Add unknown location error handling
 
         if (regNum) {
-
-            if (regFormatCheck(regNum)) {
-                if( !(await checkDuplicates(db, regNum)) ){
-                    await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
-                }else{
-                    req.flash("info", "Registration already exists");
+            if(regNum.startsWith("CA") || regNum.startsWith("CJ") ||regNum.startsWith("CJ") ||regNum.startsWith("CF") ||regNum.startsWith("CK") ||regNum.startsWith("CY") ){
+                if (regFormatCheck(regNum)) {
+                    if (!(await checkDuplicates(db, regNum))) {
+                        await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
+                    } else {
+                        req.flash("info", "Registration already exists");
+                    }
+                } else {
+                    req.flash("info", "This is an invalid format");
                 }
-            } else {
-                req.flash("info", "This is an invalid format");
+            }else{
+                req.flash("info", "Unknown Location Registration");
             }
 
         } else {
@@ -64,7 +64,6 @@ export default function regNumbersFactory() {
     async function resetData(db) {
         await db.none("DELETE FROM registrations");
     }
-
 
     return {
         addRegistration,

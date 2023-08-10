@@ -32,12 +32,12 @@ app.get("/:regCode?", async (req, res) => {
     res.render("home", {regNums});
 });
 
-app.post("/add-registration", async (req, res) => {
+app.post("/registrations/add-registration", async (req, res) => {
     await regNumsInstance.addRegistration(db, (req.body.regNumInput).toUpperCase(), req);
     res.redirect("/");
 });
 
-app.get("/reset-data", async (req, res) => {
+app.get("/registrations/reset-data", async (req, res) => {
     await regNumsInstance.resetData(db);
     res.redirect("/");
 });
