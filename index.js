@@ -32,7 +32,8 @@ app.get("/:regCode?", async (req, res) => {
     let townData = await regNumsInstance.getTowns(db, req.params.regCode)
     res.render("home", {
         regNums,
-        townData
+        townData,
+        emptyList:(regNums.length == 0) 
     });
 });
 

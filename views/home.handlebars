@@ -102,13 +102,16 @@
                                     </li>
                                 {{/each}}
 
-                                <div style="display: none" class="not-found">
-                                    <center>
-                                        <p>No registration found for this location</p>
-                                        <br />
-                                        <img style="width: 40%" src="css/undraw_void_-3-ggu.svg" alt="" />
-                                    </center>
-                                </div>
+                                {{#if emptyList }}
+                                    <div class="not-found">
+                                        <center>
+                                            <p>No registration found for this location</p>
+                                            <br />
+                                            <img style="width: 40%" src="css/undraw_void_-3-ggu.svg" alt="" />
+                                        </center>
+                                    </div>
+                                {{/if}}
+
                             </div>
                         </center>
                     </div>
