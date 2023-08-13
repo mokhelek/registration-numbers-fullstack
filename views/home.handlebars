@@ -25,6 +25,11 @@
                         <button type="submit" style="width: 80px; height: 40px" id="add-btn" class="btn btn-primary">Add</button>
                     </span>
                 </form>
+                {{#if messages.examples}}
+                    <p style="font-size: 0.85rem;color:gray;margin-bottom:5px">{{messages.examples}}</p>
+                    <p style="color: #ff4a4a;margin:0"> * <span style="color: gray;"> CA 125,&nbsp; CL 475-632,&nbsp; CY 125417,&nbsp; CK 458 145</span> </p>
+                    &nbsp;
+                {{/if}}
             </center>
         </div>
     </div>
@@ -66,7 +71,7 @@
                             </button>
 
                             <!-- Modal -->
-                            <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -102,7 +107,7 @@
                                     </li>
                                 {{/each}}
 
-                                {{#if emptyList }}
+                                {{#if emptyList}}
                                     <div class="not-found">
                                         <center>
                                             <p>No registration found for this location</p>

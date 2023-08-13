@@ -57,6 +57,7 @@ export default function regNumbersFactory() {
                     }
                 } else {
                     req.flash("info", "This is an invalid format");
+                    req.flash("examples", "Registration examples");
                 }
             }else{
                 req.flash("info", "Unknown Location Registration");
