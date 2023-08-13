@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 
 import regNumbersFactory from "./reg-numbers-logic.js";
 import db from "./model/db.js";
+import regNumsRoutes from "./routes/regNumbers.js";
+
 
 import flash from "express-flash";
 import session from "express-session";
@@ -26,26 +28,11 @@ app.use(bodyParser.json());
 
 
 let regNumsInstance = regNumbersFactory();
+let regNums = regNumsRoutes(db, regNumsInstance)
 
-app.get("/:regCode?", async (req, res) => {
-    let regNums = await regNumsInstance.getRegistrations(db, req.params.regCode );
-    let townData = await regNumsInstance.getTowns(db, req.params.regCode)
-    res.render("home", {
-        regNums,
-        townData,
-        emptyList:(regNums.length == 0) 
-    });
-});
-
-app.post("/registrations/add-registration", async (req, res) => {
-    await regNumsInstance.addRegistration(db, (req.body.regNumInput).toUpperCase(), req);
-    res.redirect("/");
-});
-
-app.get("/registrations/reset-data", async (req, res) => {
-    await regNumsInstance.resetData(db);
-    res.redirect("/");
-});
+app.get("/:regCode?", regNums.show);
+app.post("/registrations/add-registration", regNums.add );
+app.get("/registrations/reset-data", regNums.reset);
 
 let PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
