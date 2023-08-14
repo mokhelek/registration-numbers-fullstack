@@ -103,7 +103,7 @@
 
                                 {{#each regNums}}
                                     <li>
-                                        {{this.registration}}
+                                       <a style="text-decoration: none;color:black" href="reg_number/{{this.registration}}" >{{this.registration}}</a> 
                                     </li>
                                 {{/each}}
 
@@ -130,7 +130,7 @@
                     {{#each townData}}
                         <div style="margin-bottom: 0.5rem;" class="col-sm-4">
                             <div align="center" id="{{this.code}}" class="card card-body">
-                                <h2 id="kuils_river_counter" class="town-count"><strong>{{this.counter}}</strong></h2>
+                                <h2 id="kuils_river_counter" class="town-count">{{this.counter}}</h2>
                                 <p id="town">{{this.town}}</p>
                             </div>
                         </div>

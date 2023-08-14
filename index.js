@@ -32,6 +32,7 @@ let regNums = regNumsRoutes(db, regNumsInstance)
 
 app.get("/:regCode?", regNums.show);
 app.post("/registrations/add-registration", regNums.add );
+app.get("/reg_number/:selectedReg", regNums.showOne);
 app.get("/registrations/reset-data", regNums.reset);
 
 let PORT = process.env.PORT || 3000;

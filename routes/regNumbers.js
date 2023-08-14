@@ -17,6 +17,10 @@ export default function regNumsRoutes(db, regNumsInstance) {
         res.redirect("/");
     }
 
+    async function showOne(req, res) {
+        let selectedReg = req.params.selectedReg ;
+        res.render('registration-selected', {selectedReg})
+    }
 
     async function reset(req, res) {
         await regNumsInstance.resetData(db);
@@ -26,7 +30,8 @@ export default function regNumsRoutes(db, regNumsInstance) {
     return {
         show,
         add,
-        reset
+        reset,
+        showOne
         
     };
 }
