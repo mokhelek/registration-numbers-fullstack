@@ -1,20 +1,8 @@
 export default function regNumbersFactory() {
-    let registrationNumbers = [];
+  
     let registrationFormat = /^[a-zA-Z]{0,3}\s*\d{3}(?:[-\s]?\d{0,3})$/;
 
-    function filterRegNumbers(town) {
-        let filteredArray = [];
-        if (town == "ALL") {
-            filteredArray = registrationNumbers;
-        } else {
-            registrationNumbers.filter(function (regNum) {
-                if (regNum.startsWith(town)) {
-                    filteredArray.push(regNum);
-                }
-            });
-        }
-        return filteredArray;
-    }
+
 
     function regFormatCheck(input) {
         return registrationFormat.test(input);
@@ -46,26 +34,9 @@ export default function regNumbersFactory() {
 
     async function addRegistration(db, regNum, req) {
 
-        if (regNum) {
-            if(regNum.startsWith("CA") || regNum.startsWith("CJ") ||regNum.startsWith("CJ") ||regNum.startsWith("CF") ||regNum.startsWith("CK") ||regNum.startsWith("CY") ){
-                if (regFormatCheck(regNum)) {
-                    if (!(await checkDuplicates(db, regNum))) {
-                        await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
-                        await db.none('UPDATE towns SET counter = towns.counter + 1 WHERE code = $1',[regNum.substring(0, 2)])
-                    } else {
-                        req.flash("info", "Registration already exists");
-                    }
-                } else {
-                    req.flash("info", "This is an invalid format");
-                    req.flash("examples", "Registration examples");
-                }
-            }else{
-                req.flash("info", "Unknown Location Registration");
-            }
+        await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
+        await db.none('UPDATE towns SET counter = towns.counter + 1 WHERE code = $1',[regNum.substring(0, 2)])
 
-        } else {
-            req.flash("info", "Input cannot be empty");
-        }
     }
 
     async function resetData(db) {
@@ -76,9 +47,9 @@ export default function regNumbersFactory() {
     return {
         addRegistration,
         getRegistrations,
-        filterRegNumbers,
         regFormatCheck,
         resetData,
         getTowns,
+        checkDuplicates
     };
 }
