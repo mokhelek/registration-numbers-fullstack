@@ -1,9 +1,9 @@
 
-export default function regNumsRoutes(db, regNumsInstance) {
+export default function regNumsRoutes(regNumsInstance) {
 
     async function show(req, res) {
-        let regNums = await regNumsInstance.getRegistrations(db, req.params.regCode);
-        let townData = await regNumsInstance.getTowns(db, req.params.regCode);
+        let regNums = await regNumsInstance.getRegistrations(req.params.regCode);
+        let townData = await regNumsInstance.getTowns(req.params.regCode);
   
         res.render("home", {
             regNums,
@@ -19,8 +19,8 @@ export default function regNumsRoutes(db, regNumsInstance) {
         if (regNum) {
             if(regNum.startsWith("CA") || regNum.startsWith("CJ") ||regNum.startsWith("CJ") ||regNum.startsWith("CF") ||regNum.startsWith("CK") ||regNum.startsWith("CY") ){
                 if (regNumsInstance.regFormatCheck(regNum)) {
-                    if (!(await regNumsInstance.checkDuplicates(db, regNum))) {
-                        await regNumsInstance.addRegistration(db, (req.body.regNumInput).toUpperCase(), req);
+                    if (!(await regNumsInstance.checkDuplicates(regNum))) {
+                        await regNumsInstance.addRegistration((req.body.regNumInput).toUpperCase(), req);
                     } else {
                         req.flash("info", "Registration already exists");
                     }
@@ -46,7 +46,7 @@ export default function regNumsRoutes(db, regNumsInstance) {
     }
 
     async function reset(req, res) {
-        await regNumsInstance.resetData(db);
+        await regNumsInstance.resetData();
         res.redirect("/");
     }
 

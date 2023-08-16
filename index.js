@@ -27,8 +27,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-let regNumsInstance = regNumbersFactory();
-let regNums = regNumsRoutes(db, regNumsInstance)
+let regNumsInstance = regNumbersFactory(db);
+let regNums = regNumsRoutes(regNumsInstance)
 
 app.get("/:regCode?", regNums.show);
 app.post("/registrations/add-registration", regNums.add );
