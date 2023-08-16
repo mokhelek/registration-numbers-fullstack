@@ -15,7 +15,7 @@ export default function regNumsRoutes(db, regNumsInstance) {
     async function add(req, res) {
         
         let regNum = (req.body.regNumInput).toUpperCase()
-        
+
         if (regNum) {
             if(regNum.startsWith("CA") || regNum.startsWith("CJ") ||regNum.startsWith("CJ") ||regNum.startsWith("CF") ||regNum.startsWith("CK") ||regNum.startsWith("CY") ){
                 if (regNumsInstance.regFormatCheck(regNum)) {

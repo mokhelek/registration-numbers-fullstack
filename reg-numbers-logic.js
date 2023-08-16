@@ -1,30 +1,21 @@
 export default function regNumbersFactory() {
-  
     let registrationFormat = /^[a-zA-Z]{0,3}\s*\d{3}(?:[-\s]?\d{0,3})$/;
-
-
 
     function regFormatCheck(input) {
         return registrationFormat.test(input);
     }
 
     async function getRegistrations(db, regCode) {
-        let filteredRegArr = [];
-        let registrations = await db.any("SELECT * FROM registrations");
-
         if (regCode == undefined || regCode == "ALL") {
-            filteredRegArr = registrations;
+            return (await db.any("SELECT * FROM registrations")).reverse() ;
         } else {
-            filteredRegArr = registrations.filter(function (item) {
-                return item.registration.includes(regCode);
-            });
+            return (await db.any("SELECT registration FROM registrations WHERE code = $1", regCode)).reverse() ;
         }
-        return filteredRegArr.reverse();
     }
 
     async function getTowns(db) {
         let townsData = await db.any("SELECT * FROM towns");
-        return townsData.reverse() ;
+        return townsData.reverse();
     }
 
     async function checkDuplicates(db, regNum) {
@@ -33,15 +24,13 @@ export default function regNumbersFactory() {
     }
 
     async function addRegistration(db, regNum, req) {
-
-        await db.none("INSERT INTO registrations (registration) VALUES ($1)", [regNum]);
-        await db.none('UPDATE towns SET counter = towns.counter + 1 WHERE code = $1',[regNum.substring(0, 2)])
-
+        await db.none("INSERT INTO registrations (code, registration) VALUES ($1, $2)", [regNum.substring(0, 2), regNum]);
+        await db.none("UPDATE towns SET counter = towns.counter + 1 WHERE code = $1", [regNum.substring(0, 2)]);
     }
 
     async function resetData(db) {
         await db.none("DELETE FROM registrations");
-        await db.none('UPDATE towns SET counter = 0')
+        await db.none("UPDATE towns SET counter = 0");
     }
 
     return {
@@ -50,6 +39,6 @@ export default function regNumbersFactory() {
         regFormatCheck,
         resetData,
         getTowns,
-        checkDuplicates
+        checkDuplicates,
     };
 }
